@@ -1,0 +1,17 @@
+Package: MadsR
+Title: Simplifies working with data from the danish microbiological system MADS
+Version: 0.1
+Authors@R: person("Marc Trunjer Kusk", "Nielsen", email = "marc.mtk@gmail.com", role = c("aut", "cre"))
+Description: This package is intented to simplify some of the more common
+    data munging and epidemiogical operations performed on MADS style data. Early
+    versions like this focus on reading in data and applying relevant mutations.
+Depends:
+    R (>= 3.2.3)
+License: MIT + file LICENSE
+LazyData: true
+Imports:
+    dplyr,
+    tidyr,
+    lubridate,
+    stringr
+RoxygenNote: 5.0.1.9000
