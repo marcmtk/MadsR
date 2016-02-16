@@ -11,10 +11,12 @@ read_mads <- function(file, model){
 
   if(model=="analyser") {
     read.csv(file, stringsAsFactors = F) %>%
-      mutate(afsendt=as.Date(dmy(afsendt)), modtaget=as.Date(dmy(modtaget)), besvaret=as.Date(dmy(besvaret))) %>%
+      mutate(afsendt=as.Date(dmy(afsendt)), modtaget=as.Date(dmy(modtaget)), besvaret=as.Date(dmy(besvaret)),
+             year=year(afsendt), month=month(afsendt, label=T, abbr=F), week=week(afsendt),
+             weekday=wday(afsendt, label=T, abbr=F)) %>%
       separate(afsender, c("hospital", "afdeling", "afsnit"), extra="merge", fill="right", remove=F) %>%
-      mutate(hospital = ifelse(str_detect(hospital, "^[0-9]+$"), "AP", hospital),
-             afdeling = ifelse(str_detect(afdeling, "^[0-9]+$"), "", hospital),
+      mutate(hospital = ifelse(str_detect(afsender, "^[0-9]+$"), "AP", hospital),
+             afdeling = ifelse(str_detect(afsender, "^[0-9]+$"), "", hospital),
              hosp_afd = paste(hospital, afdeling))
   }
 }

@@ -13,5 +13,6 @@ Imports:
     dplyr,
     tidyr,
     lubridate,
-    stringr
+    stringr,
+    scales
 RoxygenNote: 5.0.1.9000
