@@ -8,6 +8,8 @@
 read_mads <- function(file, model){
   if(anyNA(file)) stop("Which file?")
   if(anyNA(model)) stop("You need to specify which extraction model was used for the MADS file")
+  library(dplyr); library(lubridate); library(tidyr); library(stringr)
+
 
   if(model=="analyser") {
     read.csv(file, stringsAsFactors = F) %>%
