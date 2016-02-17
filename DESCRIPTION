@@ -1,6 +1,6 @@
 Package: MadsR
 Title: Simplifies working with data from the danish microbiological system MADS
-Version: 0.1
+Version: 0.1.1
 Authors@R: person("Marc Trunjer Kusk", "Nielsen", email = "marc.mtk@gmail.com", role = c("aut", "cre"))
 Description: This package is intented to simplify some of the more common
     data munging and epidemiogical operations performed on MADS style data. Early
