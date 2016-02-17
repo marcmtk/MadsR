@@ -18,7 +18,7 @@ read_mads <- function(file, model){
              weekday=wday(afsendt, label=T, abbr=F)) %>%
       separate(afsender, c("hospital", "afdeling", "afsnit"), extra="merge", fill="right", remove=F) %>%
       mutate(hospital = ifelse(str_detect(afsender, "^[0-9]+$"), "AP", hospital),
-             afdeling = ifelse(str_detect(afsender, "^[0-9]+$"), "", hospital),
+             afdeling = ifelse(str_detect(afsender, "^[0-9]+$"), "", afdeling),
              hosp_afd = paste(hospital, afdeling))
   }
 }
