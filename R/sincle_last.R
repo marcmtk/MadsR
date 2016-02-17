@@ -14,8 +14,9 @@ since_last <- function(data, positive, min.days.to.new.episode=14, plot=F) {
 
   sl <- data[positive,] %>% group_by(cprnr.) %>% arrange(afsendt) %>%
     mutate(sl=c(NA, diff(afsendt))) %>% #Per case difference - correction for multiple positive samples
-    filter(is.na(sl) | sl < min.days.to.new.episode) %>%
+    filter(is.na(sl) | sl > min.days.to.new.episode) %>%
     ungroup() %>%
+    arrange(afsendt) %>%
     mutate(sl=c(NA, diff(afsendt))) #Difference between any new cases
   if(plot) {
     ggplot(sl, aes(afsendt, sl)) + geom_point() + geom_smooth() +
