@@ -9,7 +9,7 @@
 #' @export
 #'
 since_last <- function(data, positive, min.days.to.new.episode=14, plot=F) {
-  if(!data) stop("Specify a MADS dataframe")
+  if(missing(data)) stop("Specify a MADS dataframe")
   if(class(positive) != "logical") stop("Specify a logical vector indicating positive samples")
 
   sl <- data[positive,] %>% group_by(cprnr.) %>% arrange(afsendt) %>%
