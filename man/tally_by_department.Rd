@@ -4,7 +4,7 @@
 \alias{tally_by_department}
 \title{Tally positive and negative cases by department}
 \usage{
-tally_by_department(data, basis, positive)
+tally_by_department(data, basis, indicator, window = "month")
 }
 \arguments{
 \item{data}{a MADS dataframe}

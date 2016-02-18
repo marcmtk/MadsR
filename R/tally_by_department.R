@@ -11,15 +11,16 @@
 #' @export
 #'
 
-tally_by_department <- function(data, basis, positive) {
+tally_by_department <- function(data, basis, indicator, window="month") {
   if(is.na(data)) stop("Specify a MADS dataframe")
   if(is.na(basis) | ! basis %in% c("patient","sample")) stop("Specify a basis, patient or sample")
   if(class(positive) != "logical") stop("Specify a logical vector indicating positive samples")
 
   if(basis == "patient") {
-    pos <- group_by(data[positive,  ], hosp_afd) %>% distinct(cprnr.) %>% count
-    neg <- group_by(data[!positive, ], hosp_afd) %>% distinct(cprnr.) %>% count
-    output <- full_join(pos, neg)
+
+    data %>% group_by(hospital, afdeling, indicator) %>% distinct(cprnr.) %>% count
+
+
   } else if(basis == "sample") {
     pos <- count(data[positive, ], hosp_afd)
     neg <- count(data[!positve, ], hosp_afd)

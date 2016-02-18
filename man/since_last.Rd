@@ -2,21 +2,21 @@
 % Please edit documentation in R/sincle_last.R
 \name{since_last}
 \alias{since_last}
-\title{Provide a "since last new case" plot}
+\title{Provide a "since last new case" dataframe}
 \usage{
-since_last(data, positive, min.days.to.new.episode = 14, plot = F)
+since_last(data)
 }
 \arguments{
 \item{data}{a MADS dataframe}
 
 \item{positive}{a logical vector indicating positive samples}
 
-\item{basis}{Two bases: "Patient" which counts by patient, such that any patient with one positive test will be counted as positive. "Sample": Samples are counted individually}
+\item{min.days.to.new.episode}{Minimum number of days between to episodes for it to be considered a new episode}
 }
 \description{
 Counts on a patient, not a sample, basis.
 }
 \keyword{MADS}
-\keyword{count}
-\keyword{tally}
+\keyword{last}
+\keyword{since}
 
