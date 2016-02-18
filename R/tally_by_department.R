@@ -9,12 +9,13 @@
 #' @param positive a logical vector indicating positive samples
 #' @keywords MADS tally count
 #' @export
+#' @import dplyr
 #'
 
-tally_by_department <- function(data, basis, indicator, window="month") {
-  if(is.na(data)) stop("Specify a MADS dataframe")
-  if(is.na(basis) | ! basis %in% c("patient","sample")) stop("Specify a basis, patient or sample")
-  if(class(positive) != "logical") stop("Specify a logical vector indicating positive samples")
+tally_by_department <- function(data, basis, ...) {
+  if(missing(data)) stop("Specify a MADS dataframe")
+  if(missing(basis) | ! basis %in% c("patient", "sample", "case")) stop("Specify a basis, patient, case or sample")
+  #if(class(positive) != "logical") stop("Specify a logical vector indicating positive samples")
 
   if(basis == "patient") {
 
@@ -22,9 +23,20 @@ tally_by_department <- function(data, basis, indicator, window="month") {
 
 
   } else if(basis == "sample") {
-    pos <- count(data[positive, ], hosp_afd)
-    neg <- count(data[!positve, ], hosp_afd)
-    output <- full_join(pos, neg)
+    Positive <- count(data[positive, ], hosp_afd)
+    Negative <- count(data[!positve, ], hosp_afd)
+    output <- full_join(Positive, Negative)
+  } else if(basis == "case") { #Case differs from patient by allowing a positive patient with multiple episodes to be counted multiple times
+    cases <- filter_cases(data, ...)
+    skeleton <- tidyr::expand(data, hosp_afd, year, month)
+    Positive <- count(cases, hosp_afd, year, month) %>% rename(Positive=n)
+    Negative <- filter(data, ! cprnr. %in% unique(cases$cprnr.)) %>%
+      count(hosp_afd, year, month) %>%
+      rename(Negative=n)
+    output <- left_join(skeleton, Positive) %>%
+      left_join(Negative) %>%
+      tidyr::replace_na(list(Positive=0, Negative=0)) %>%
+      tidyr::gather(Result, n, Positive, Negative)
   }
   output
 }

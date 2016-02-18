@@ -18,6 +18,7 @@ filter_cases <- function(data, ..., min.days.to.new.episode=14) {
     arrange(afsendt) %>%
     mutate(sl = c(NA, diff(afsendt))) %>%
     filter(is.na(sl) | sl >= min.days.to.new.episode) %>%
+    mutate(episode = row_number()) %>%
     ungroup
 }
 
