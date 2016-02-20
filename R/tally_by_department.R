@@ -12,31 +12,45 @@
 #' @import dplyr
 #'
 
-tally_by_department <- function(data, basis, ...) {
+tally_by_department <- function(data, basis, ..., window="month") {
   if(missing(data)) stop("Specify a MADS dataframe")
   if(missing(basis) | ! basis %in% c("patient", "sample", "case")) stop("Specify a basis, patient, case or sample")
-  #if(class(positive) != "logical") stop("Specify a logical vector indicating positive samples")
+  if(!window %in% c("year", "quarter", "month", "week")) stop("Specify a window, either year, quarter, month or week")
+
+  if(window != "year") {
+    skeleton <- tidyr::expand_(data, c(~hosp_afd, lazyeval::interp(~tidyr::nesting(year, window), window=as.name(window))))
+  } else {
+    skeleton <- tidyr::expand_(data, c(~hosp_afd, ~year))
+  }
+  window_count <- function(data) count_(data, c(~hosp_afd, ~year, lazyeval::interp(~w, w=as.name(window))))
+
+  ligaments <- function() left_join(skeleton, Positive) %>%
+    left_join(Negative) %>%
+    tidyr::replace_na(list(Positive=0, Negative=0)) %>%
+    tidyr::gather(Result, n, Positive, Negative)
 
   if(basis == "patient") {
-
-    data %>% group_by(hospital, afdeling, indicator) %>% distinct(cprnr.) %>% count
+    patients <- filter_cases(data, ...) %>% filter(episode==1)
+    Positive <- window_count(patients) %>% rename(Positive=n)
+    Negative <- filter(data, ! cprnr. %in% unique(patients$cprnr.)) %>%
+      window_count %>%
+      rename(Negative=n)
+    output <- ligaments()
 
 
   } else if(basis == "sample") {
-    Positive <- count(data[positive, ], hosp_afd)
-    Negative <- count(data[!positve, ], hosp_afd)
-    output <- full_join(Positive, Negative)
+    Negative_indices <- !1:nrow(data) %in% (mutate(data, row=row_number()) %>% filter(...) %>% select(row) %>% .$row)
+    Positive <- filter(data, ...) %>% window_count %>% rename(Positive=n)
+    Negative <- data[Negative_indices,] %>% window_count %>% rename(Negative=n)
+    output <- ligaments()
+
   } else if(basis == "case") { #Case differs from patient by allowing a positive patient with multiple episodes to be counted multiple times
     cases <- filter_cases(data, ...)
-    skeleton <- tidyr::expand(data, hosp_afd, year, month)
-    Positive <- count(cases, hosp_afd, year, month) %>% rename(Positive=n)
+    Positive <- window_count(cases) %>% rename(Positive=n)
     Negative <- filter(data, ! cprnr. %in% unique(cases$cprnr.)) %>%
-      count(hosp_afd, year, month) %>%
+      window_count %>%
       rename(Negative=n)
-    output <- left_join(skeleton, Positive) %>%
-      left_join(Negative) %>%
-      tidyr::replace_na(list(Positive=0, Negative=0)) %>%
-      tidyr::gather(Result, n, Positive, Negative)
+    output <- ligaments()
   }
   output
 }

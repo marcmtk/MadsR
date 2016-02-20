@@ -16,6 +16,7 @@ read_mads <- function(file, model){
              modtaget=as.Date(lubridate::dmy(modtaget)),
              besvaret=as.Date(lubridate::dmy(besvaret)),
              year=lubridate::year(afsendt),
+             quarter=lubridate::quarter(afsendt),
              month=lubridate::month(afsendt, label=T, abbr=F),
              week=lubridate::week(afsendt),
              weekday=lubridate::wday(afsendt, label=T, abbr=F)) %>%
