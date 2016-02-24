@@ -15,5 +15,6 @@ Imports:
     lubridate,
     stringr,
     scales
-RoxygenNote: 5.0.1.9000
-Suggests: testthat
+RoxygenNote: 5.0.1
+Suggests:
+    testthat

@@ -4,7 +4,10 @@
 \alias{generate_MADS_like_data}
 \title{Generating random MADS-like data}
 \usage{
-generate_MADS_like_data()
+generate_MADS_like_data(model = "analyser")
+}
+\arguments{
+\item{model}{either \code{analyser} or \code{species+res}}
 }
 \description{
 Outputs a randomly generated dataframe of MADS-like data into ./data/MADS-like.csv.
