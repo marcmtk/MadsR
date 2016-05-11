@@ -170,7 +170,7 @@ Note the difference between plot 2 and plot 3. It is very important that
 time since last positive case is computed *after* relevant filtering.
 
 Last useful functions, tallying by department and heatmapping the
-results:
+results:1
 
     tbd <- tally_by_department(df, "patient", result == "Positiv")
 
