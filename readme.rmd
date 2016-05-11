@@ -1,0 +1,72 @@
+---
+title: "Readme"
+author: "Marc Trunjer Kusk Nielsen"
+date: "11 maj 2016"
+output: md_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(MadsR)
+library(dplyr)
+library(ggplot2)
+```
+
+MadsR - let's get to the fun part.
+
+MadsR is a package designed for my own uses with data from the danish microbiological system MADS.
+
+Installation
+----------------
+```{r, eval=FALSE}
+devtools::install_github("marcmtk/MadsR")
+```
+
+Functions implemented
+-----------------
+This package provides 6 functions to assist with epidemiological analyses of MADS data and 2 functions to generate MADS like data for testing purposes.
+
+* `read_mads` - reads a csv file, applies appropriate types to columns, adds time columns and splits name of sender into useful categories.
+* `filter_cases` - easy filtering of first episode in a timewindow.
+* `since_last` - calculates the time since a new positive sample was last seen.
+* `tally_by_department` - calculates positive cases by department, provides functions to exclude observations based on different windows, see examples
+* `slplot` - a "Since last" plot
+* `tally_map` - a heatmap of tally data
+* `generate_MADS_like_data` - as the name implies 
+* `generate_res` - generates resistance patterns
+
+Examples
+---------------
+Consider the dataset provided in analyser-like.csv with read_csv vs read_mads
+
+```{r, warning=FALSE}
+getwd()
+df <- read.csv("./extdata/analyser-like.csv")
+str(df)
+head(df)
+df <- read_mads("./extdata/analyser-like.csv", "analyser")
+str(df)
+head(df)
+```
+
+Let's filter some cases and look at the results
+```{r}
+cases <- filter_cases(df, result=="Positiv", min.days.to.new.episode=14)
+table(cases$hosp_afd, cases$episode)
+table(cases$sl)
+```
+
+Now let's look at a since last plot, after all there may be an epidemic out there!
+```{r, warning=FALSE}
+since_last(df) %>% slplot()
+since_last(df) %>% filter(hosp_afd=="S V") %>% slplot()
+filter(df, hosp_afd == "S V") %>% since_last() %>% slplot()
+```
+
+```{r, fig.height=4, fig.width=12}
+tbd <- tally_by_department(df, "patient", result == "Positiv")
+tally_map(tbd)
+filter(tbd, hosp_afd != "AP ") %>% tally_map
+```
+
+Note the difference between plot 2 and plot 3. It is very important that time since last positive case is computed *after* relevant filtering.
