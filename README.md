@@ -35,10 +35,6 @@ Examples
 Consider the dataset provided in analyser-like.csv with read\_csv vs
 read\_mads
 
-    getwd()
-
-    ## [1] "I:/Dokumenter/Dropbox/Programmering/R/MadsR"
-
     df <- read.csv("./extdata/analyser-like.csv")
     str(df)
 
@@ -184,3 +180,33 @@ results:1
     filter(tbd, hosp_afd != "AP ") %>% tally_map
 
 ![](readme_files/figure-markdown_strict/unnamed-chunk-5-2.png)<!-- -->
+
+Session info
+------------
+
+    sessionInfo()
+
+    ## R version 3.2.3 (2015-12-10)
+    ## Platform: x86_64-w64-mingw32/x64 (64-bit)
+    ## Running under: Windows 10 x64 (build 10240)
+    ## 
+    ## locale:
+    ## [1] LC_COLLATE=Danish_Denmark.1252  LC_CTYPE=Danish_Denmark.1252   
+    ## [3] LC_MONETARY=Danish_Denmark.1252 LC_NUMERIC=C                   
+    ## [5] LC_TIME=Danish_Denmark.1252    
+    ## 
+    ## attached base packages:
+    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
+    ## 
+    ## other attached packages:
+    ## [1] ggplot2_2.1.0 dplyr_0.4.3   MadsR_0.1.2  
+    ## 
+    ## loaded via a namespace (and not attached):
+    ##  [1] Rcpp_0.12.4      knitr_1.12.3     magrittr_1.5     munsell_0.4.3   
+    ##  [5] lattice_0.20-33  colorspace_1.2-6 R6_2.1.2         stringr_1.0.0   
+    ##  [9] plyr_1.8.3       tools_3.2.3      parallel_3.2.3   grid_3.2.3      
+    ## [13] nlme_3.1-127     gtable_0.2.0     mgcv_1.8-12      DBI_0.3.1       
+    ## [17] htmltools_0.3.5  yaml_2.1.13      lazyeval_0.1.10  assertthat_0.1  
+    ## [21] digest_0.6.9     Matrix_1.2-5     gridExtra_2.2.1  formatR_1.3     
+    ## [25] tidyr_0.4.1      viridis_0.3.4    evaluate_0.8.3   rmarkdown_0.9.5 
+    ## [29] labeling_0.3     stringi_1.0-1    scales_0.4.0     lubridate_1.5.6

@@ -40,7 +40,6 @@ Examples
 Consider the dataset provided in analyser-like.csv with read_csv vs read_mads
 
 ```{r, warning=FALSE}
-getwd()
 df <- read.csv("./extdata/analyser-like.csv")
 str(df)
 head(df)
@@ -70,4 +69,11 @@ Last useful functions, tallying by department and heatmapping the results:1
 tbd <- tally_by_department(df, "patient", result == "Positiv")
 tally_map(tbd)
 filter(tbd, hosp_afd != "AP ") %>% tally_map
+```
+
+
+Session info
+-------------
+```{r}
+sessionInfo()
 ```
